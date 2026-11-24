@@ -11,7 +11,7 @@ process.umask(0o022);
 // environment variables, which is how the program is tested locally:
 //   mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { copyFileSync, mkdirSync } from "node:fs";
+import { copyFileSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const botDir = process.env.MAKEFUN_BOT_DIR ?? "/bot";
@@ -19,6 +19,20 @@ const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
 const source = join(botDir, "POST.json");
 const target = join(outputDir, "POST.json");
+
+// Fail loudly here rather than at the gate: POST.json must parse and its
+// url must at least look like an X post address before we hand it in.
+try {
+  const parsed = JSON.parse(readFileSync(source, "utf8"));
+  if (typeof parsed.url !== "string" || !/^https:\/\/(x|twitter)\.com\//.test(parsed.url)) {
+    console.error(`POST.json does not name an X post address: ${String(parsed.url)}`);
+    process.exit(1);
+  }
+} catch (error) {
+  const detail = error instanceof Error ? error.message : String(error);
+  console.error(`POST.json could not be read from ${source}: ${detail}`);
+  process.exit(1);
+}
 
 try {
   mkdirSync(outputDir, { recursive: true });
