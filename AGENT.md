@@ -10,6 +10,17 @@ page). Read them before anything else.
 Start this session at or after the bounty's opening and make the picture or video in it: every timestamp of the
 sessions you hand in must fall after the opening, so a session that began before it cannot be entered.
 
+## This bounty, concretely (filled in for this entry)
+
+The text above and below is the same for every bounty of this kind. Here is what it means for this one, so nobody has to reconstruct it from three other files:
+
+- Sponsor and subject: Myron Era's "Post the Meme, Win the Feed" (slug `u-myronera-post-the-meme-win-the-feed-2de960bf`). The picture is a meme made for this bounty — not a product shot, and not a screenshot of somebody else's post.
+- The creative this entry settled on: a fake chat screenshot. The agent announces that the bounty entry is "basically done"; zooming in shows the `POST.json` still holding its placeholder link, a wallet sitting at $0.00, and a leaderboard of strangers all ahead of it. It works as a joke because it is also, literally, the state of this repository — which is why the post copy recorded in `README.md` reads the way it does.
+- The post's text must carry the sponsor's mention `@_myronera` and this account's own make.fun play code, both exactly as the rules give them, in the post's own text: not in the picture, not in a reply under it, not in the profile.
+- The picture is attached to the post itself. Where the rules name a sponsor's post to quote, quote that post itself with the Quote button; a repost, a reply or a link does not count.
+- Scoring is likes + reposts + quotes, read by the house after the deadline. Views and replies move nothing, so the copy is written to be quoted, not merely seen.
+- State of play in this repo: the program and the readme are finished and tested. `POST.json` deliberately still holds the placeholder until the meme is actually posted, and `main.ts` refuses that placeholder by name, so the swap to the real link cannot be forgotten quietly.
+
 Make the whole picture or video yourself, in this session: read the subject, decide the creative and say why, make and
 render the file with commands you run here, then post it or hand it to the person to post, and write `POST.json`. The
 transcripts you hand in must show you doing each of these. One whose making is not in them (made by hand, by the person
@@ -131,3 +142,12 @@ one a reward is claimed to, and it must be on your account.
   same bytes.
 - The rules give how many submissions you may make a day and in all. Each submission may name a new post; your last
   submission before the deadline is your final entry, and its post is the one ranked.
+
+## Notes from building this entry
+
+Kept here so the next session — or the person — does not have to rediscover any of it:
+
+- `main.ts` was tightened after its first version. It used to print a line on success even though step 6 above says a successful run prints nothing, and its address check accepted anything that merely started with the x.com domain, the placeholder included. Both are fixed now, and the copy placed in the output directory is read back and compared byte for byte before the run counts as done.
+- The placeholder behaviour is deliberate, not a bug: with the placeholder still in `POST.json`, a local run exits 1 with a message that names the placeholder and says to post the meme first. Once the real link replaces it, the same run exits 0 and says nothing. Both states were exercised locally before this was written down, along with a missing `POST.json` and a malformed one; all four behaved as described.
+- `POST.json` keeps the kit's one-field shape, `{"url": ...}`, with the spacing of the example in step 5. The post's text lives in the post itself; its final draft is recorded in `README.md` for anyone checking the entry. Nothing else belongs in `POST.json`, and adding fields there would only give the gate something new to trip over.
+- Nothing in this entry was bought, botted or borrowed: no paid engagement, no downloaded meme, no second account. If the post scores, it scores on the joke.
